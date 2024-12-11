@@ -56,3 +56,6 @@ Desktop.ini
 *.backup
 *.[0-9]
 *.old 
+
+# Cursor ignore
+.cursorignore 
