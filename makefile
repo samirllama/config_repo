@@ -7,8 +7,10 @@ WEZTERM_CONFIG_DIR := $(REPO_CONFIG_DIR)/wezterm
 SYSTEM_WEZTERM_DIR := $(XDG_CONFIG_HOME)/wezterm
 KITTY_CONFIG_DIR := $(REPO_CONFIG_DIR)/kitty
 SYSTEM_KITTY_DIR := $(XDG_CONFIG_HOME)/kitty
+XDG_LOCAL_BIN ?= $(HOME)/.local/bin
+REPO_BIN_DIR := $(CURDIR)/bin
 
-.PHONY: all setup deploy backup clean lint test help
+.PHONY: all setup deploy backup clean lint test help setup-bin
 
 all: help
 
@@ -21,12 +23,22 @@ help:
 	@echo "  lint    - Lint configuration files"
 	@echo "  test    - Test configurations"
 
-setup: backup
+setup: backup setup-bin
 	@echo "Setting up configurations..."
 	mkdir -p $(XDG_CONFIG_HOME)
 	mkdir -p $(SYSTEM_ZSH_DIR)
 	mkdir -p $(SYSTEM_WEZTERM_DIR)
 	mkdir -p $(SYSTEM_KITTY_DIR)
+
+setup-bin:
+	@echo "Setting up binary scripts..."
+	mkdir -p $(XDG_LOCAL_BIN)
+	@for script in $(REPO_BIN_DIR)/*; do \
+		if [ -f "$$script" ]; then \
+			chmod +x "$$script"; \
+			ln -sf "$$script" "$(XDG_LOCAL_BIN)/"; \
+		fi \
+	done
 
 deploy: setup
 	@echo "Deploying configurations..."
@@ -68,6 +80,12 @@ clean:
 	find . -name "*.zwc" -delete
 	find . -name "*.zwc.old" -delete
 	find . -name "*.zcompdump" -delete
+	@echo "Cleaning binary symlinks..."
+	@for script in $(REPO_BIN_DIR)/*; do \
+		if [ -f "$$script" ]; then \
+			rm -f "$(XDG_LOCAL_BIN)/$$(basename $$script)"; \
+		fi \
+	done
 
 lint:
 	@echo "Linting configuration files..."

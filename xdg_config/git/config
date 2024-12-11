@@ -16,12 +16,47 @@
   autoStash = true
 
 [alias]
-# This creates a pretty graph view of the log
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-  l = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
+ # list all aliases
+ la = "!git config -l | grep alias | cut -c 7-"
+
+ # This creates a pretty graph view of the log
+ lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+ l = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
+ 
+ # push new branch - push a branch to origin and set upstream
+ po = "!git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)"
+ # show what I did today
+ day = "!sh -c 'git log --reverse --no-merges --branches=* --date=local --after=\"yesterday 11:59PM\" --author=\"`git config --get user.name`\"'"
+
+ # show the committers in the last 100 commits, sorted by who has commited the most
+ review = "!git log --no-merges --pretty=%an | head -n 100 | sort | uniq -c | sort -nr"
+
+ # order files by number of commits, ascending
+ # Written by Corey Haines, Scriptified by Gary Bernhardt
+ # Show churn for a time range:
+ # $ git churn --since='1 month ago'
+ churn = "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
+
+ # show all deleted files in the repo
+ deleted = "!git log --diff-filter=D --summary | grep delete"
+ 
+ # create an empty commit
+ empty = commit --allow-empty
+
+ # current branch
+ cbr = rev-parse --abbrev-ref HEAD
+
+ # show the current branch's upstream
+ upstream = rev-parse --abbrev-ref --symbolic-full-name @{u}
 
 [push]
+  # push will only do the current branch, not all branches
   default = current
+[branch]
+  # set up 'git pull' to rebase instead of merge
+  autosetuprebase = always
+[pull]
+  rebase = true
 
 [delta]
   line-numbers = true
@@ -30,8 +65,30 @@
 
   file-modified-label = modified:
 
+[color]
+  diff = auto
+  status = auto	
+  branch = auto
+  interactive = auto
+  ui = auto
+[color "branch"]
+  current = green bold
+  local = green
+  remote = red bold
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = green bold
+  changed = yellow bold
+  untracked = red
+[color "sh"]
+  branch = yellow
+
 [interactive]
   diffFilter = delta --color-only
+
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+  helper = !/usr/bin/gh auth git-credential
