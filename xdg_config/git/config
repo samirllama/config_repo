@@ -1,0 +1,37 @@
+[user]
+  name = Samir Lama
+  email = samir.lama@gmail.com
+
+[core]
+  editor = nvim
+	excludesFile = ~/.gitignore
+
+  pager = delta
+    ; autocrlf = input
+
+[pull]
+  rebase = true
+
+[rebase]
+  autoStash = true
+
+[alias]
+# This creates a pretty graph view of the log
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  l = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
+
+[push]
+  default = current
+
+[delta]
+  line-numbers = true
+  syntax-theme = gruvbox
+  side-by-side = false
+
+  file-modified-label = modified:
+
+[interactive]
+  diffFilter = delta --color-only
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

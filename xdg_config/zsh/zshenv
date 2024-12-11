@@ -1,0 +1,36 @@
+# Set XDG Base Directory paths
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+# Set ZDOTDIR to use XDG config directory
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+
+# Set common environment variables
+export EDITOR="vim"
+export VISUAL="vim"
+export PAGER="less"
+
+# Set language and locale
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+# Set path
+typeset -U path
+path=(
+    $HOME/.local/bin
+    /usr/local/bin
+    /usr/bin
+    /bin
+    $path
+)
+
+# Set manual path
+typeset -U manpath
+manpath=(
+    $XDG_DATA_HOME/man
+    /usr/local/share/man
+    /usr/share/man
+    $manpath
+) 

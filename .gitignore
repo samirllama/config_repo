@@ -1,0 +1,58 @@
+# Zsh specific
+*.zwc
+*.zwc.old
+.zcompdump*
+.zhistory
+.zsh_history
+.zsh_sessions
+.zcomp
+
+# Sensitive data
+.env
+*.key
+*.pem
+*.cert
+*.secret
+secrets/
+
+# OS specific
+.DS_Store
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+
+# Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Backup files
+*.bak
+*.backup
+*.[0-9]
+*.old 
